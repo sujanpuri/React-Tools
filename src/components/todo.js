@@ -6,12 +6,25 @@ const Todo = () => {
     const [name, setname] = useState("")
     const [array, setarray] = useState([]);
 
+
     function handleCheckbox(id){
         setarray(array.map(item=>{
             return(item.idnum === id? {...item, checked: !item.checked}: item)
         }))
-    }      
-//the Id of clicked item comes here & compares with every idnum of item of array, and if it matches with the idnum of any item, it changes the checked status of that item
+    }      //the Id of clicked item comes here & compares with every idnum of item of array, and if it matches with the idnum of any item, it changes the checked status of that item
+
+    function handleAdding(){
+        if(name===""){
+            <p>Enter some thing please</p>
+        }else{
+            setarray([
+            ...array, 
+            {idnum: idnum, name: name, checked: false}
+            ])
+            setidnum(idnum+1)   //increases the idnum
+            setname("")     //clears the input box
+        }
+    }
 
     function handleRemoving(){      //this removes the items that is selected.
         setarray(array.filter(item => !item.checked))
@@ -27,21 +40,19 @@ const Todo = () => {
         <h2>To-Do App</h2>
         {/* ADDING DATA TO THE ARRAY */}
 
-        <input value={name} onChange={(e)=>{setname(e.target.value)}} required/>
-        <button 
-            onClick={()=>{
-                if(name===""){
-                    <p>Enter some thing please</p>
-                }else{
-                    setarray([
-                    ...array, 
-                    {idnum: idnum, name: name, checked: false}
-                    ])
-                    setidnum(idnum+1)   //increases the idnum
-                    setname("")     //clears the input box
+        <input 
+            value={name} 
+            onChange={(e)=>{setname(e.target.value)}} 
+            onKeyDown={(e)=>{
+                if(e.key === "Enter"){
+                    handleAdding(e)
                 }
-        }
-            }>
+            }}
+            required
+        />
+        <button     
+            onClick={handleAdding}
+        >
             Add
         </button>
 
